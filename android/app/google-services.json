@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1030863767082",
+    "project_id": "chay-luy-72958",
+    "storage_bucket": "chay-luy-72958.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030863767082:android:16fa55600eda38d241a553",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5jMBwpiz5pbnTS9vynhwS10uivuS2zRM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
