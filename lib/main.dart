@@ -1,4 +1,4 @@
-import 'package:chay_luy/Homescreen.dart';
+import 'package:chay_luy/screens/Homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
