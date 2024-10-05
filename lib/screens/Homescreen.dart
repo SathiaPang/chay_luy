@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: primeGreen,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: Center(
           child: Column(
             children: [
@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: SvgPicture.asset(
-                  'lib/assets/images/Pattern-1.svg',
+                  './lib/assets/images/Pattern-1.svg',
                   fit: BoxFit.contain,
                 ),
               ),
