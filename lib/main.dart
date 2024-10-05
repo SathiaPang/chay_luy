@@ -15,7 +15,8 @@ class MainScreen extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.from(
-          colorScheme: ColorScheme.fromSeed(seedColor: primeGreen)),
+        colorScheme: ColorScheme.fromSeed(seedColor: primeGreen),
+      ),
       home: OnBoardingScreen(),
     );
   }
