@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chay_luy/models/user/user.dart';
 import 'package:chay_luy/screens/auth/OtpScreen.dart';
 import 'package:chay_luy/screens/auth/components/button.dart';
 import 'package:chay_luy/screens/auth/components/ProfileAvatar.dart';
@@ -15,13 +16,17 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final firstnameController = TextEditingController();
+  final lastnameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phonenumberController = TextEditingController();
+
   File? _image;
   final picker = ImagePicker();
 
   //Image Picker function to get image from gallery
   Future getImageFromGallery() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
@@ -32,7 +37,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   //Image Picker function to get image from camera
   Future getImageFromCamera() async {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
-
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
@@ -44,8 +48,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future showPhotoPicker() async {
     showModalBottomSheet(
       context: context,
+      showDragHandle: true,
       builder: (context) {
         return Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
               title: Text('Photo Gallery'),
@@ -61,10 +67,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 getImageFromCamera();
               },
             ),
+            SizedBox(height: 80)
           ],
         );
       },
     );
+  }
+
+  void _onContinueRegister() {
+    final data = User(
+      firstname: firstnameController.text,
+      lastname: lastnameController.text,
+      email: emailController.text,
+      phonenumber: phonenumberController.text
+    );
+    Get.to(() => OtpScreen(changePassword: false, data: data));
   }
 
   @override
@@ -100,6 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               SizedBox(height: 32),
               TextFormField(
+                controller: firstnameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Firstname',
@@ -107,6 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               SizedBox(height: 16),
               TextFormField(
+                controller: lastnameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Lastname',
@@ -114,6 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               SizedBox(height: 16),
               TextFormField(
+                controller: emailController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
@@ -122,6 +142,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               SizedBox(height: 20),
               TextFormField(
+                controller: phonenumberController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Phone number',
@@ -131,7 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(height: 32),
               CustomFormButton(
                 text: "Continue",
-                onClick: () => Get.to(() => OtpScreen(changePassword: false)),
+                onClick: _onContinueRegister,
               ),
               SizedBox(height: 32),
             ],

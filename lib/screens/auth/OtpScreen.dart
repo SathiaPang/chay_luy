@@ -1,21 +1,34 @@
 import 'package:chay_luy/assets/constants.dart';
+import 'package:chay_luy/models/user/user.dart';
 import 'package:chay_luy/screens/auth/NewPassword.dart';
-import 'package:chay_luy/screens/auth/components/button.dart';
+import 'package:chay_luy/screens/components/dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:get/route_manager.dart';
+import 'package:pinput/pinput.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key, required this.changePassword});
+  const OtpScreen(
+      {super.key, required this.changePassword, required this.data});
 
   final bool changePassword;
+  final User data;
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  String code = "";
+  void _onSubmit(String value) {
+    print(value);
+    if (value == "1111") {
+      Get.to(
+        () => NewPasswordScreen(
+            changePassword: widget.changePassword, data: widget.data),
+      );
+    } else {
+      showErrorDialog(context: context, message: "Wrong Code");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,25 +55,20 @@ class _OtpScreenState extends State<OtpScreen> {
                 "Enter code that we have sent to your email",
               ),
               SizedBox(height: 32),
-              OtpTextField(
-                numberOfFields: 4,
-                focusedBorderColor: primeGreen,
-                showFieldAsBox: true,
-                fieldWidth: 64,
-                handleControllers: (value) {
-                  code =
-                      value.map((v) => v?.text).where((v) => v != null).join();
-                },
+              Pinput(
+                length: 4,
+                onCompleted: _onSubmit,
+                pinAnimationType: PinAnimationType.slide,
+                focusedPinTheme: PinTheme(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(19),
+                    border: Border.all(color: primeGreen),
+                  ),
+                ),
               ),
               SizedBox(height: 32),
-              CustomFormButton(
-                text: "Submit",
-                onClick: () {
-                  Get.to(
-                    () => NewPasswordScreen(changePassword: widget.changePassword),
-                  );
-                },
-              ),
               SizedBox(height: 32),
               Align(
                 alignment: Alignment.center,

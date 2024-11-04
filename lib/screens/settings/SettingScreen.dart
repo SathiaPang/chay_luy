@@ -1,8 +1,12 @@
 import 'package:chay_luy/assets/constants.dart';
+import 'package:chay_luy/main.dart';
+import 'package:chay_luy/screens/auth/LoginScreen.dart';
 import 'package:chay_luy/screens/settings/components/ProfileSection.dart';
 import 'package:chay_luy/screens/settings/components/SettingItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:get/route_manager.dart';
 
 class Settingscreen extends StatefulWidget {
   const Settingscreen({super.key});
@@ -26,11 +30,14 @@ class _SettingscreenState extends State<Settingscreen> {
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 16),
-            child: Text(
-              "Logout",
-              style: TextStyle(
-                color: Colors.red[500],
-                fontSize: 18,
+            child: TextButton(
+              onPressed: () => Get.offAll(() => LoginScreen()),
+              child: Text(
+                "Logout",
+                style: TextStyle(
+                  color: Colors.red[500],
+                  fontSize: 18,
+                ),
               ),
             ),
           ),

@@ -1,3 +1,4 @@
+import 'package:chay_luy/models/user/user.dart';
 import 'package:chay_luy/screens/auth/OtpScreen.dart';
 import 'package:chay_luy/screens/auth/components/button.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,8 @@ class ForgetPasswordScreen extends StatefulWidget {
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
+  final emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +40,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               ),
               SizedBox(height: 32),
               TextFormField(
+                controller: emailController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
@@ -46,7 +50,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               SizedBox(height: 32),
               CustomFormButton(
                 text: "Send code",
-                onClick: () => Get.to(() => OtpScreen(changePassword: true)),
+                onClick: () =>
+                    Get.to(() => OtpScreen(changePassword: true, data: User(email: emailController.text))),
               ),
               SizedBox(height: 32),
             ],

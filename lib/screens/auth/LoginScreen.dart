@@ -1,6 +1,8 @@
+import 'package:chay_luy/domain/repo/app_repo.dart';
 import 'package:chay_luy/screens/auth/ForgetPasswordScreen.dart';
 import 'package:chay_luy/screens/auth/RegisterScreen.dart';
 import 'package:chay_luy/screens/auth/components/button.dart';
+import 'package:chay_luy/screens/components/dialog.dart';
 import 'package:chay_luy/screens/settings/SettingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -13,6 +15,21 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final repo = AppRepo();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void _submitSignin() async {
+    final success =
+        await repo.login(emailController.text, passwordController.text);
+    if (success) {
+      Get.offAll(Settingscreen());
+    } else {
+      showErrorDialog(context: context, message: "Login failed");
+    }
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: 32),
               TextFormField(
+                controller: emailController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
@@ -43,6 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: 20),
               TextFormField(
+                controller: passwordController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Password',
@@ -69,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: 32),
               CustomFormButton(
                 text: "Sign In",
-                onClick: () => Get.offAll(Settingscreen()),
+                onClick: _submitSignin,
               ),
               SizedBox(height: 16),
               Align(
