@@ -1,10 +1,17 @@
 import 'package:chay_luy/screens/Detailscreen.dart';
 import 'package:chay_luy/screens/Homescreen.dart';
-
+import 'package:chay_luy/assets/constants.dart';
+import 'package:chay_luy/firebase/firebase_options.dart';
+import 'package:chay_luy/screens/onboarding/OnboardingScreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MainScreen());
 }
 
