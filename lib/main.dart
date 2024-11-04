@@ -1,5 +1,6 @@
-import 'package:chay_luy/assets/constants.dart';
-import 'package:chay_luy/screens/onboarding/OnboardingScreen.dart';
+import 'package:chay_luy/screens/Detailscreen.dart';
+import 'package:chay_luy/screens/Homescreen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -14,10 +15,10 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.from(
-        colorScheme: ColorScheme.fromSeed(seedColor: primeGreen),
+      theme: ThemeData(
+        fontFamily: "Pro",
       ),
-      home: OnBoardingScreen(),
+      home: HomeScreen(),
     );
   }
 }
