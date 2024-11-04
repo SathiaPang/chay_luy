@@ -1,6 +1,6 @@
 import 'package:chay_luy/assets/constants.dart';
 import 'package:chay_luy/models/OnboardingItem.dart';
-import 'package:chay_luy/screens/Homescreen.dart';
+import 'package:chay_luy/screens/auth/LoginScreen.dart';
 import 'package:chay_luy/screens/onboarding/components/OnboardingItemScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -28,7 +28,8 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
-  var pageController = PageController();
+  final pageController = PageController();
+  var allowScroll = true;
 
   @override
   Widget build(BuildContext context) {
@@ -73,14 +74,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 style: ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(primeGreen),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (pageController.page == widget.boardingItem.length - 1) {
-                    Get.to(HomeScreen());
+                    Get.to(() => LoginScreen());
                   } else {
-                    pageController.nextPage(
-                      duration: Durations.medium1,
-                      curve: Curves.easeInOutCubic,
-                    );
+                    if (allowScroll) {
+                      allowScroll = false;
+                      await pageController.nextPage(
+                        duration: Durations.medium1,
+                        curve: Curves.easeInOutCubic,
+                      );
+                      allowScroll = true;
+                    }
                   }
                 },
                 child: Text('Next'),
