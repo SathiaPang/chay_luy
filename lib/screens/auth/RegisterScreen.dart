@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:chay_luy/domain/repo/app_repo.dart';
 import 'package:chay_luy/models/user/user.dart';
 import 'package:chay_luy/screens/auth/OtpScreen.dart';
 import 'package:chay_luy/screens/auth/components/button.dart';
 import 'package:chay_luy/screens/auth/components/ProfileAvatar.dart';
+import 'package:chay_luy/screens/components/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,6 +18,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final repo = AppRepo();
   final firstnameController = TextEditingController();
   final lastnameController = TextEditingController();
   final emailController = TextEditingController();
@@ -74,14 +77,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void _onContinueRegister() {
+  void _onContinueRegister() async {
+    if (emailController.text.isEmpty) {
+      showErrorDialog(context: context, message: "Email cannot be empty");
+      return;
+    }
+    if (await repo.isEmailRegistered(emailController.text)) {
+      showErrorDialog(context: context, message: "Email already registered");
+      return;
+    }
+
     final data = User(
-      firstname: firstnameController.text,
-      lastname: lastnameController.text,
-      email: emailController.text,
-      phonenumber: phonenumberController.text
-    );
-    Get.to(() => OtpScreen(changePassword: false, data: data));
+        firstname: firstnameController.text,
+        lastname: lastnameController.text,
+        email: emailController.text,
+        phonenumber: phonenumberController.text);
+    Get.to(() => OtpScreen(register: true, data: data));
   }
 
   @override
