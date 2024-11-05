@@ -8,9 +8,9 @@ import 'package:pinput/pinput.dart';
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen(
-      {super.key, required this.changePassword, required this.data});
+      {super.key, required this.register, required this.data});
 
-  final bool changePassword;
+  final bool register;
   final User data;
 
   @override
@@ -23,7 +23,7 @@ class _OtpScreenState extends State<OtpScreen> {
     if (value == "1111") {
       Get.to(
         () => NewPasswordScreen(
-            changePassword: widget.changePassword, data: widget.data),
+            register: widget.register, data: widget.data),
       );
     } else {
       showErrorDialog(context: context, message: "Wrong Code");

@@ -1,4 +1,5 @@
 import 'package:chay_luy/assets/constants.dart';
+import 'package:chay_luy/domain/db/local.dart';
 import 'package:chay_luy/models/OnboardingItem.dart';
 import 'package:chay_luy/screens/auth/LoginScreen.dart';
 import 'package:chay_luy/screens/onboarding/components/OnboardingItemScreen.dart';
@@ -30,6 +31,22 @@ class OnBoardingScreen extends StatefulWidget {
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final pageController = PageController();
   var allowScroll = true;
+
+  void _onNextClick() async {
+    if (pageController.page == widget.boardingItem.length - 1) {
+      await LocalDatabase.setData<bool>("seenOnboard", true);
+      Get.to(() => LoginScreen());
+    } else {
+      if (allowScroll) {
+        allowScroll = false;
+        await pageController.nextPage(
+          duration: Durations.medium1,
+          curve: Curves.easeInOutCubic,
+        );
+        allowScroll = true;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,20 +91,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 style: ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(primeGreen),
                 ),
-                onPressed: () async {
-                  if (pageController.page == widget.boardingItem.length - 1) {
-                    Get.to(() => LoginScreen());
-                  } else {
-                    if (allowScroll) {
-                      allowScroll = false;
-                      await pageController.nextPage(
-                        duration: Durations.medium1,
-                        curve: Curves.easeInOutCubic,
-                      );
-                      allowScroll = true;
-                    }
-                  }
-                },
+                onPressed: _onNextClick,
                 child: Text('Next'),
               ),
             ),

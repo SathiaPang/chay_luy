@@ -10,9 +10,9 @@ import 'package:get/route_manager.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   const NewPasswordScreen(
-      {super.key, required this.changePassword, required this.data});
+      {super.key, required this.register, required this.data});
 
-  final bool changePassword;
+  final bool register;
   final User data;
 
   @override
@@ -36,23 +36,24 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       return;
     }
 
-    if (!widget.changePassword) {
-      final result =
-          await repo.signup(widget.data.copyWith(password: pw.hashPassword()));
-      if (result)
-        Get.to(
-          () => SuccessScreen(
-            title:
-                widget.changePassword ? "Password Changed" : "Congratulations",
-            message: widget.changePassword
-                ? "Your password has been changed successfully."
-                : "Your account is ready to use. You now can go to home page.",
-            buttonLabel: "Finish",
-            onDone: () {
-              Get.offAll(Settingscreen());
-            },
-          ),
-        );
+    final result = (widget.register)
+        ? await repo.signup(widget.data.copyWith(password: pw.hashPassword()))
+        : await repo.changePassword(widget.data, pw);
+    if (result) {
+      Get.to(
+        () => SuccessScreen(
+          title: widget.register ? "Congratulations" : "Password Changed",
+          message: widget.register
+              ? "Your account is ready to use. You now can go to home page."
+              : "Your password has been changed successfully.",
+          buttonLabel: "Finish",
+          onDone: () {
+            Get.offAll(Settingscreen());
+          },
+        ),
+      );
+    } else {
+      showErrorDialog(context: context, message: "Unknown Error");
     }
   }
 

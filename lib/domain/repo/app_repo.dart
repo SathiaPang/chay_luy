@@ -18,18 +18,46 @@ class AppRepo {
     }
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<bool> isEmailRegistered(String email) async {
     try {
-      print(password.hashPassword());
       final result = await FirestoreDatabase.userTable
           .where("email", isEqualTo: email)
-          .where("password", isEqualTo: password.hashPassword())
           .get();
-      print(result.docs.map((e) => e.data()).join(","));
       if (result.docs.isEmpty)
         return false;
       else
         return true;
+    } catch (ex) {
+      ex.printError();
+      return false;
+    }
+  }
+
+  Future<bool> login(String email, String password) async {
+    try {
+      final result = await FirestoreDatabase.userTable
+          .where("email", isEqualTo: email)
+          .where("password", isEqualTo: password.hashPassword())
+          .get();
+      if (result.docs.isEmpty)
+        return false;
+      else
+        return true;
+    } catch (ex) {
+      ex.printError();
+      return false;
+    }
+  }
+
+  Future<bool> changePassword(User user, String newPassword) async {
+    try {
+      final result = await FirestoreDatabase.userTable
+          .where("email", isEqualTo: user.email)
+          .get();
+      FirestoreDatabase.userTable
+          .doc(result.docs.first.id)
+          .update({"password": newPassword.hashPassword()});
+      return true;
     } catch (ex) {
       ex.printError();
       return false;

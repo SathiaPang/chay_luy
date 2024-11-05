@@ -1,7 +1,6 @@
-import 'package:chay_luy/screens/Detailscreen.dart';
-import 'package:chay_luy/screens/Homescreen.dart';
-import 'package:chay_luy/assets/constants.dart';
+import 'package:chay_luy/domain/db/local.dart';
 import 'package:chay_luy/firebase/firebase_options.dart';
+import 'package:chay_luy/screens/Homescreen.dart';
 import 'package:chay_luy/screens/onboarding/OnboardingScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +11,14 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MainScreen());
+  final seenOnboard = await LocalDatabase.getData<bool>("seenOnboard");
+  runApp(MainScreen(seenOnboard: seenOnboard));
 }
 
 class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
+  const MainScreen({super.key, required this.seenOnboard});
+
+  final bool? seenOnboard;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class MainScreen extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "Pro",
       ),
-      home: HomeScreen(),
+      home: (seenOnboard == true) ? HomeScreen() : OnBoardingScreen(),
     );
   }
 }
